@@ -70,9 +70,13 @@ public class SqlDatabase implements Database {
 
             });
 
-            String sql = String.format("INSERT INTO `%s` ('%s') VALUES ('%s')",
-                    filter.getKey(), keyBuilder.toString(), valueBuilder.toString());
-            PreparedStatement statement = connection.getConnection().prepareStatement(sql);
+            PreparedStatement statement = connection.getConnection()
+                    .prepareStatement("INSERT INTO `?` (?) VALUES (?)");
+
+            statement.setString(0, filter.getKey());
+            statement.setString(1, keyBuilder.toString());
+            statement.setString(2, valueBuilder.toString());
+            
             try {
                 statement.executeUpdate();
             } catch (SQLException exception) {
