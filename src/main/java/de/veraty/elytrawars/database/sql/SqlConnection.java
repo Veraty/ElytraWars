@@ -18,6 +18,7 @@ package de.veraty.elytrawars.database.sql;
 
 import de.veraty.elytrawars.ElytraWarsPlugin;
 import de.veraty.elytrawars.database.Credential;
+import de.veraty.elytrawars.database.Database;
 import de.veraty.elytrawars.database.DatabaseConnection;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -31,14 +32,22 @@ import lombok.Getter;
 @Getter
 public class SqlConnection implements DatabaseConnection {
 
-    private static final String URL = "jdbc:/%s/%s";
+    private static final String URL = "jdbc://%s:%s/%s";
 
     private Connection connection;
+    private Database database;
 
     @Override
     public void open(Credential credential) {
         try {
-            this.connection = DriverManager.getConnection(String.format(URL), credential.getUser(), credential.getPassword());
+            this.connection = DriverManager.getConnection(
+                    String.format(URL,
+                            credential.getHostname(),
+                            String.valueOf(credential.getPort()),
+                            credential.getDatabase()),
+                    credential.getUser(),
+                    credential.getPassword());
+
         } catch (SQLException exception) {
             ElytraWarsPlugin.getInstance().handle(exception);
         }
@@ -63,6 +72,15 @@ public class SqlConnection implements DatabaseConnection {
             ElytraWarsPlugin.getInstance().handle(exception);
         }
         return false;
+    }
+
+    @Override
+    public Database database() {
+        if (database == null) {
+            database = new SqlDatabase(this);
+        }
+
+        return database;
     }
 
 }
