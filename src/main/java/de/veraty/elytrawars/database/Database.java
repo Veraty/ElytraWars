@@ -50,4 +50,11 @@ public interface Database {
      */
     Collection<UniversalDocuments> read(UniversalFilter filter);
 
+    /**
+     * Gets the databases connection.
+     *
+     * @return connection
+     */
+    DatabaseConnection getConnection();
+
 }
