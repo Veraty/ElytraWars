@@ -25,15 +25,23 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.function.Consumer;
+import lombok.Getter;
 
 /**
+ * Sql implementation of the database.
  *
  * @author merlin
  */
+@Getter
 public class SqlDatabase implements Database {
 
     private final SqlConnection connection;
 
+    /**
+     * Constructs a SqlDatabase.
+     *
+     * @param connection connection
+     */
     public SqlDatabase(SqlConnection connection) {
         this.connection = connection;
     }
