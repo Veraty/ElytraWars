@@ -16,6 +16,10 @@
  */
 package de.veraty.elytrawars;
 
+import com.google.common.base.Optional;
+import de.veraty.elytrawars.database.Databases;
+import de.veraty.elytrawars.database.async.AsyncDatabase;
+import de.veraty.elytrawars.database.sql.SqlDatabase;
 import de.veraty.elytrawars.util.ExceptionConsumer;
 import java.util.function.Consumer;
 import lombok.Getter;
@@ -35,11 +39,23 @@ public class ElytraWarsPlugin extends JavaPlugin {
     private static ElytraWarsPlugin instance;
 
     private final Consumer<Throwable> exceptionHandler;
+    private AsyncDatabase database;
 
     public ElytraWarsPlugin() {
         instance = this;
 
         this.exceptionHandler = new ExceptionConsumer();
+    }
+
+    @Override
+    public void onEnable() {
+
+        Optional<AsyncDatabase> optional = Databases.async(
+                Databases.connect(null, SqlDatabase.class));
+
+        if (optional.isPresent()) {
+            this.database = optional.get();
+        }
     }
 
     public void handle(Throwable exception) {
