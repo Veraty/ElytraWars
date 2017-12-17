@@ -42,4 +42,11 @@ public interface DatabaseConnection {
      */
     boolean isOpen();
 
+    /**
+     * Creates the matching database.
+     *
+     * @return database
+     */
+    Database database();
+
 }
