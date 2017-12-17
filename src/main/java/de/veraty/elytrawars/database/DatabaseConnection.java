@@ -21,7 +21,7 @@ package de.veraty.elytrawars.database;
  *
  * @author Merlin
  */
-public interface DatabaseConnection {
+public interface DatabaseConnection extends AutoCloseable {
 
     /**
      * Opens the database connection.
@@ -30,10 +30,6 @@ public interface DatabaseConnection {
      */
     void open(Credential credential);
 
-    /**
-     * Closes the database connection.
-     */
-    void close();
 
     /**
      * Gets whether the connection is open?
