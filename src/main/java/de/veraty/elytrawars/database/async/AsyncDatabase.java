@@ -78,7 +78,7 @@ public class AsyncDatabase {
         ListenableFuture<Collection<UniversalDocuments>> future = executorService.
                 submit(new ReadingCallback(dedicated, filter));
 
-        Futures.addCallback(future, new ReadingFutureCallback(consumer));
+        Futures.addCallback(future, new ReadingFutureCallback(consumer), executorService);
     }
 
 }
